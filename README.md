@@ -132,7 +132,7 @@ Ce contrat peut être utilisé dans plusieurs contextes financiers réels, notam
 ---
 
 ## **Contributeur**
-- **[Votre Nom]** - Développeur principal.
+- **El Ouakhchachi Jaafar** - Développeur principal.
 
 ---
 
