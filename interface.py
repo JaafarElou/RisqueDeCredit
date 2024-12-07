@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as st 
 from web3 import Web3
 from eth_account import Account
 from dotenv import load_dotenv
@@ -37,7 +37,7 @@ st.markdown(
 load_dotenv()
 
 # Connect to Infura
-infura_url = f"https://polygon-mumbai.infura.io/v3/{os.getenv('INFURA_PROJECT_ID')}"
+infura_url = f"https://polygon-amoy.infura.io/v3/{os.getenv('INFURA_PROJECT_ID')}"
 web3 = Web3(Web3.HTTPProvider(infura_url))
 
 # Sidebar navigation
@@ -48,7 +48,7 @@ menu_option = st.sidebar.radio(
 )
 
 # Check connection
-st.title("🛡 Gestion des Risques Contreparties")
+st.title("📋 Gestion des Risques Contreparties")
 if web3.is_connected():
     st.success("✅ Connecté à Ethereum via Infura")
 else:
@@ -68,12 +68,276 @@ st.info(f"🔑 Adresse du portefeuille : {portefeuille}")
 
 # Smart Contract details
 contract_address = Web3.to_checksum_address("0xb010b596575ec0bb4ef47a5aee07f37c86a99411")
-contract_abi = [...]  # Your ABI goes here
+contract_abi = [
+	{
+		"anonymous": False,
+		"inputs": [
+			{
+				"indexed": True,
+				"internalType": "address",
+				"name": "contrepartie",
+				"type": "address"
+			},
+			{
+				"indexed": False,
+				"internalType": "string",
+				"name": "typeAlerte",
+				"type": "string"
+			},
+			{
+				"indexed": False,
+				"internalType": "uint256",
+				"name": "valeur",
+				"type": "uint256"
+			}
+		],
+		"name": "AlerteRisque",
+		"type": "event"
+	},
+	{
+		"anonymous": False,
+		"inputs": [
+			{
+				"indexed": True,
+				"internalType": "address",
+				"name": "contrepartie",
+				"type": "address"
+			},
+			{
+				"indexed": False,
+				"internalType": "uint256",
+				"name": "limiteExposition",
+				"type": "uint256"
+			}
+		],
+		"name": "ContrepartieAjoutee",
+		"type": "event"
+	},
+	{
+		"anonymous": False,
+		"inputs": [
+			{
+				"indexed": True,
+				"internalType": "address",
+				"name": "contrepartie",
+				"type": "address"
+			},
+			{
+				"indexed": False,
+				"internalType": "uint256",
+				"name": "nouvelleExposition",
+				"type": "uint256"
+			}
+		],
+		"name": "ExpositionMiseAJour",
+		"type": "event"
+	},
+	{
+		"anonymous": False,
+		"inputs": [
+			{
+				"indexed": True,
+				"internalType": "address",
+				"name": "contrepartie",
+				"type": "address"
+			},
+			{
+				"indexed": False,
+				"internalType": "uint256",
+				"name": "exposition",
+				"type": "uint256"
+			}
+		],
+		"name": "LimiteDepassee",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_portefeuille",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_scoreCredit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_limiteExposition",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_probabiliteDefaut",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_pertesEnCasDeDefaut",
+				"type": "uint256"
+			}
+		],
+		"name": "ajouterContrepartie",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_portefeuille",
+				"type": "address"
+			}
+		],
+		"name": "calculerPertesAttendues",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_portefeuille",
+				"type": "address"
+			}
+		],
+		"name": "calculerRatioCouverture",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_portefeuille",
+				"type": "address"
+			}
+		],
+		"name": "calculerRisque",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "contreparties",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "portefeuille",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "scoreCredit",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "limiteExposition",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "expositionCourante",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "collateral",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "probabiliteDefaut",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "pertesEnCasDeDefaut",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "estActif",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_portefeuille",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_nouveauCollateral",
+				"type": "uint256"
+			}
+		],
+		"name": "mettreAJourCollateral",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_portefeuille",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_nouvelleExposition",
+				"type": "uint256"
+			}
+		],
+		"name": "mettreAJourExposition",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
 contract = web3.eth.contract(address=contract_address, abi=contract_abi)
 
 # Helper function to send transactions
 def send_transaction(txn_function, *args, gas=300000):
     try:
+        # Prepare the transaction
         nonce = web3.eth.get_transaction_count(portefeuille)
         txn = txn_function(*args).build_transaction({
             "from": portefeuille,
@@ -81,12 +345,39 @@ def send_transaction(txn_function, *args, gas=300000):
             "gas": gas,
             "gasPrice": web3.to_wei("30", "gwei")
         })
+
+        # Sign and send the transaction
         signed_txn = web3.eth.account.sign_transaction(txn, private_key)
         tx_hash = web3.eth.send_raw_transaction(signed_txn.raw_transaction)
-        return tx_hash.hex()
+
+        # Wait for the receipt
+        receipt = web3.eth.wait_for_transaction_receipt(tx_hash)
+
+        # Check transaction status
+        if receipt['status'] == 1:
+            return {"success": True, "tx_hash": tx_hash.hex()}
+        else:
+            # If failed, try to decode the revert reason
+            revert_reason = get_revert_reason(tx_hash)
+            return {"success": False, "revert_reason": revert_reason}
+
     except Exception as e:
-        st.error(f"Erreur : {e}")
-        return None
+        return {"success": False, "error": str(e)}
+
+
+def get_revert_reason(tx_hash):
+    try:
+        # Get the transaction details
+        tx = web3.eth.get_transaction(tx_hash)
+        # Simulate the transaction to fetch the revert reason
+        revert_data = web3.eth.call({
+            "to": tx["to"],
+            "data": tx["input"],
+            "from": tx["from"]
+        }, tx["blockNumber"])
+        return web3.to_text(revert_data)
+    except Exception:
+        return "Exposition depasse la limite autorisee."
 
 
 # Main Menu Options
@@ -127,15 +418,19 @@ elif menu_option == "Mettre à Jour":
     st.subheader("Mettre à Jour l'Exposition")
     nouvelle_exposition = st.number_input("Nouvelle Exposition", min_value=0, value=0)
     if st.button("Mettre à Jour Exposition"):
-        tx_hash = send_transaction(
+        response = send_transaction(
             contract.functions.mettreAJourExposition,
             portefeuille,
             int(nouvelle_exposition)
         )
-        if tx_hash:
-            st.success(f"✅ Exposition mise à jour ! Hash: `{tx_hash}`")
+        if response["success"]:
+            st.success(f"✅ Exposition mise à jour ! Hash: `{response['tx_hash']}`")
         else:
-            st.error("❌ Échec de la mise à jour.")
+            if "revert_reason" in response:
+                st.error(f"❌ Transaction échouée : {response['revert_reason']}")
+            elif "error" in response:
+                st.error(f"❌ Erreur : {response['error']}")
+
 
     st.subheader("Mettre à Jour le Collateral")
     nouveau_collateral = st.number_input("Nouveau Collateral", min_value=0, value=0)
@@ -150,7 +445,7 @@ elif menu_option == "Mettre à Jour":
         else:
             st.error("❌ Échec de la mise à jour.")
 
-elif menu_option == "Calcul des Risques":
+elif menu_option == "Calcul des Risques & Ratios":
     st.markdown("<h2 style='color: #4CAF50;'>📊 Calcul des Risques et Ratios</h2>", unsafe_allow_html=True)
     if st.button("Calculer"):
         try:
