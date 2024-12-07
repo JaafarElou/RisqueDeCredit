@@ -9,8 +9,8 @@ contract GestionnaireRisqueContrepartie {
         uint256 limiteExposition;
         uint256 expositionCourante;
         uint256 collateral;
-        uint256 probabiliteDefaut; // Probabilité de défaut (PD) en pourcentage
-        uint256 pertesEnCasDeDefaut; // Pertes en cas de défaut (LGD) en pourcentage
+        uint256 probabiliteDefaut;
+        uint256 pertesEnCasDeDefaut;
         bool estActif;
     }
 
