@@ -50,7 +50,7 @@ menu_option = st.sidebar.radio(
 # Check connection
 st.title("📋 Gestion des Risques Contreparties")
 if web3.is_connected():
-    st.success("✅ Connecté à Ethereum via Infura")
+    st.success("✅ Connecté à Polygone-amoy via Infura")
 else:
     st.error("❌ Échec de la connexion à Infura")
     st.stop()
